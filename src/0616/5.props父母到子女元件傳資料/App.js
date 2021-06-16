@@ -1,5 +1,4 @@
-import React, { useState } from 'react' //最新版本可以省略這行
-import './App.css'
+import React from 'react'
 import Parent from './components/Parent'
 
 function App() {
@@ -9,4 +8,5 @@ function App() {
     </>
   )
 }
+
 export default App
