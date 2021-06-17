@@ -38,13 +38,13 @@ function App() {
     ).toLocaleString()
 
   // 計算所有商品數量
-  const productCount = () => tshirtOne + tshirtTwo + tshirtThree
+  const productCount = () =>
+    tshirtOne + tshirtTwo + tshirtThree
 
   return (
     <div className="card">
       <div className="row">
         <OrderList
-          productCount={productCount}
           tshirtOne={tshirtOne}
           setTshirtOne={setTshirtOne}
           tshirtTwo={tshirtTwo}
@@ -55,7 +55,10 @@ function App() {
           pictureList={pictureList}
           nameList={nameList}
         />
-        <Summary productCount={productCount} total={total} />
+        <Summary
+          productCount={productCount}
+          total={total}
+        />
       </div>
     </div>
   )

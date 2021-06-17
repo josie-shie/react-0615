@@ -5,6 +5,7 @@ function ChildA(props) {
   return (
     <>
       <h1>This is ChildA</h1>
+      {/* 方法下放：子元件繼承父屬性的finction再將子元件的值帶入之中 */}
       <button
         onClick={() => {
           props.setParentData(childAData)
