@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 
 function App() {
+  // 表單的ref
+  const formRef = useRef(null)
+
   // 養成習慣，先定義有哪些欄位屬性
   const [fields, setFields] = useState({
     username: '',
     email: '',
     password: '',
-    agree: false, //checkbox跟radio都是靠布林值來判斷狀態
-    gender: '', //checkbox的狀態
+    agree: false,
   })
 
   // 每個欄位的錯誤訊息
@@ -31,9 +33,9 @@ function App() {
     const updatedFields = {
       ...fields,
       [e.target.name]:
-        //e.target為checkbox時拿到的不是value而是checked的狀態(布林值)因此要在這裡下判斷式更換e.target的屬性
-        //rdio也是如此(e.target.radio)
-        e.target.type === 'checkbox' ? e.target.checked : e.target.value,
+        e.target.type === 'checkbox'
+          ? e.target.checked
+          : e.target.value,
     }
 
     setFields(updatedFields)
@@ -42,10 +44,9 @@ function App() {
   // 處理表單送出
   const handleSubmit = (e) => {
     // 阻擋表單送出預設行為
-    //html會送出一個網址
     e.preventDefault()
 
-    // FormData抓取表單的值
+    // FormData
     const data = new FormData(e.target)
 
     console.log(data.get('email'))
@@ -78,9 +79,37 @@ function App() {
   const handleInvalid = (e) => {
     e.preventDefault()
 
+    // 表單實體的物件參照
+    const form = formRef.current
+
+    let errorMsg = {}
+
+    for (let i = 0; i < form.elements.length; i++) {
+      const element = form.elements[i]
+
+      if (
+        element.tagName !== 'button' &&
+        element.willValidate &&
+        !element.validity.valid
+      ) {
+        // 必填用預設訊息，但錯誤格式驗証用title中的字串
+        if (element.validity.valueMissing) {
+          errorMsg = {
+            ...errorMsg,
+            [element.name]: element.validationMessage,
+          }
+        } else {
+          errorMsg = {
+            ...errorMsg,
+            [element.name]: element.title,
+          }
+        }
+      }
+    }
+
     const updatedFieldErrors = {
       ...fieldErrors,
-      [e.target.name]: e.target.validationMessage,
+      ...errorMsg,
     }
 
     setFieldErrors(updatedFieldErrors)
@@ -89,6 +118,7 @@ function App() {
   return (
     <>
       <form
+        ref={formRef}
         onSubmit={handleSubmit}
         onChange={handleChange}
         onInvalid={handleInvalid}
@@ -102,6 +132,7 @@ function App() {
             onChange={handleFieldChange}
             required
             placeholder="帳號"
+            title="自訂訊息：格式錯誤"
           />
           {fieldErrors.username && (
             <small className="text-danger form-text">
@@ -118,9 +149,12 @@ function App() {
             onChange={handleFieldChange}
             required
             placeholder="email信箱"
+            title="自訂訊息：email信箱格式錯誤"
           />
           {fieldErrors.email && (
-            <small className="text-danger form-text">{fieldErrors.email}</small>
+            <small className="text-danger form-text">
+              {fieldErrors.email}
+            </small>
           )}
         </div>
 
@@ -143,48 +177,25 @@ function App() {
         </div>
         <div className="form-check">
           <input
-            type="radio"
-            name="gender"
-            //用value就可以把直傳進去
-            value="男性"
-            required
-            // radio={fields.gender === '男性'}
-            onChange={handleFieldChange}
-            className="form-check-input"
-          />
-          <label className="form-check-label" htmlFor="exampleCheck1">
-            男性
-          </label>
-        </div>
-        <div className="form-check">
-          <input
-            type="radio"
-            name="gender"
-            //用value就可以把直傳進去
-            value="女性"
-            // radio={fields.gender === '女性'}
-            onChange={handleFieldChange}
-            className="form-check-input"
-          />
-          <label className="form-check-label" htmlFor="exampleCheck1">
-            女性
-          </label>
-        </div>
-        <div className="form-check">
-          <input
             type="checkbox"
             name="agree"
+            required
             checked={fields.agree}
             onChange={handleFieldChange}
             className="form-check-input"
           />
-          <label className="form-check-label" htmlFor="exampleCheck1">
+          <label
+            className="form-check-label"
+            htmlFor="exampleCheck1"
+          >
             我同意網站的使用者規章
           </label>
         </div>
 
         {fieldErrors.agree && (
-          <small className="text-danger form-text">{fieldErrors.agree}</small>
+          <small className="text-danger form-text">
+            {fieldErrors.agree}
+          </small>
         )}
 
         <button type="submit">提交</button>

@@ -6,8 +6,6 @@ function App() {
     username: '',
     email: '',
     password: '',
-    agree: false, //checkbox跟radio都是靠布林值來判斷狀態
-    gender: '', //checkbox的狀態
   })
 
   // 每個欄位的錯誤訊息
@@ -15,25 +13,14 @@ function App() {
     username: '',
     email: '',
     password: '',
-    agree: '',
   })
 
   // 處理每個欄位的變動
   const handleFieldChange = (e) => {
-    // console.log(
-    //   e.target.name,
-    //   e.target.type,
-    //   e.target.value,
-    //   e.target.checked
-    // )
-
     // 更新輸入欄位
     const updatedFields = {
       ...fields,
-      [e.target.name]:
-        //e.target為checkbox時拿到的不是value而是checked的狀態(布林值)因此要在這裡下判斷式更換e.target的屬性
-        //rdio也是如此(e.target.radio)
-        e.target.type === 'checkbox' ? e.target.checked : e.target.value,
+      [e.target.name]: e.target.value,
     }
 
     setFields(updatedFields)
@@ -42,10 +29,9 @@ function App() {
   // 處理表單送出
   const handleSubmit = (e) => {
     // 阻擋表單送出預設行為
-    //html會送出一個網址
     e.preventDefault()
 
-    // FormData抓取表單的值
+    // FormData
     const data = new FormData(e.target)
 
     console.log(data.get('email'))
@@ -78,6 +64,7 @@ function App() {
   const handleInvalid = (e) => {
     e.preventDefault()
 
+    //validationMessage是瀏覽器給target的屬性 每個瀏覽器不同
     const updatedFieldErrors = {
       ...fieldErrors,
       [e.target.name]: e.target.validationMessage,
@@ -120,7 +107,9 @@ function App() {
             placeholder="email信箱"
           />
           {fieldErrors.email && (
-            <small className="text-danger form-text">{fieldErrors.email}</small>
+            <small className="text-danger form-text">
+              {fieldErrors.email}
+            </small>
           )}
         </div>
 
@@ -141,52 +130,6 @@ function App() {
             </small>
           )}
         </div>
-        <div className="form-check">
-          <input
-            type="radio"
-            name="gender"
-            //用value就可以把直傳進去
-            value="男性"
-            required
-            // radio={fields.gender === '男性'}
-            onChange={handleFieldChange}
-            className="form-check-input"
-          />
-          <label className="form-check-label" htmlFor="exampleCheck1">
-            男性
-          </label>
-        </div>
-        <div className="form-check">
-          <input
-            type="radio"
-            name="gender"
-            //用value就可以把直傳進去
-            value="女性"
-            // radio={fields.gender === '女性'}
-            onChange={handleFieldChange}
-            className="form-check-input"
-          />
-          <label className="form-check-label" htmlFor="exampleCheck1">
-            女性
-          </label>
-        </div>
-        <div className="form-check">
-          <input
-            type="checkbox"
-            name="agree"
-            checked={fields.agree}
-            onChange={handleFieldChange}
-            className="form-check-input"
-          />
-          <label className="form-check-label" htmlFor="exampleCheck1">
-            我同意網站的使用者規章
-          </label>
-        </div>
-
-        {fieldErrors.agree && (
-          <small className="text-danger form-text">{fieldErrors.agree}</small>
-        )}
-
         <button type="submit">提交</button>
       </form>
     </>
