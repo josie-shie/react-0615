@@ -1,196 +1,73 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
+// 產品訂購的項目
+const products = [
+  {
+    name: '咖啡色 T-shirt',
+    catgory: 'Shirt',
+    image: 'https://i.imgur.com/1GrakTl.jpg',
+    price: 300,
+  },
+  {
+    name: '白色 T-shirt',
+    catgory: 'Shirt',
+    image: 'https://i.imgur.com/ba3tvGm.jpg',
+    price: 200,
+  },
+  {
+    name: '黑色 T-shirt',
+    catgory: 'Shirt',
+    image: 'https://i.imgur.com/pHQ3xT3.jpg',
+    price: 450,
+  },
+  {
+    name: '金色 T-shirt',
+    catgory: 'Shirt',
+    image: 'https://i.imgur.com/pHQ3xT3.jpg',
+    price: 1200,
+  },
+]
 
 function App() {
-  // 養成習慣，先定義有哪些欄位屬性
-  const [fields, setFields] = useState({
-    username: '',
-    email: '',
-    password: '',
-    agree: false, //checkbox跟radio都是靠布林值來判斷狀態
-    gender: '', //checkbox的狀態
-  })
+  const [data, setData] = useState([])
 
-  // 每個欄位的錯誤訊息
-  const [fieldErrors, setFieldErrors] = useState({
-    username: '',
-    email: '',
-    password: '',
-    agree: '',
-  })
+  const [isLoading, setIsLoading] = useState(false)
 
-  // 處理每個欄位的變動
-  const handleFieldChange = (e) => {
-    // console.log(
-    //   e.target.name,
-    //   e.target.type,
-    //   e.target.value,
-    //   e.target.checked
-    // )
+  // componentDidMount
+  useEffect(() => {
+    //1. 先開啟指示器
+    setIsLoading(true)
 
-    // 更新輸入欄位
-    const updatedFields = {
-      ...fields,
-      [e.target.name]:
-        //e.target為checkbox時拿到的不是value而是checked的狀態(布林值)因此要在這裡下判斷式更換e.target的屬性
-        //rdio也是如此(e.target.radio)
-        e.target.type === 'checkbox' ? e.target.checked : e.target.value,
-    }
+    //2.載入設定資料(從伺服端…)
+    // fetch/AJAX
+    setData(products)
 
-    setFields(updatedFields)
-  }
+    //3. 關起指示器
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 2000)
+    
+  }, [])
 
-  // 處理表單送出
-  const handleSubmit = (e) => {
-    // 阻擋表單送出預設行為
-    //html會送出一個網址
-    e.preventDefault()
+  const spinner = (
+    <div className="spinner-border text-danger" role="status">
+      <span className="sr-only">Loading...</span>
+    </div>
+  )
 
-    // FormData抓取表單的值
-    const data = new FormData(e.target)
-
-    console.log(data.get('email'))
-    console.log(data.get('password'))
-
-    // 利用狀態來得到輸入的值
-    console.log(fields)
-
-    // ex. 送出表單資料到伺服器
-    // fetch('/api/form-submit-url', {
-    //   method: 'POST',
-    //   body: data,
-    // })
-  }
-
-  // form有更動會觸發這個函式
-  const handleChange = (e) => {
-    console.log('更動欄位：', e.target.name)
-
-    // 該欄位錯誤訊息清空
-    const updatedFieldErrors = {
-      ...fieldErrors,
-      [e.target.name]: '',
-    }
-
-    setFieldErrors(updatedFieldErrors)
-  }
-
-  // 有錯誤的訊息會觸發在這裡
-  const handleInvalid = (e) => {
-    e.preventDefault()
-
-    const updatedFieldErrors = {
-      ...fieldErrors,
-      [e.target.name]: e.target.validationMessage,
-    }
-
-    setFieldErrors(updatedFieldErrors)
-  }
-
-  return (
+  const display = (
     <>
-      <form
-        onSubmit={handleSubmit}
-        onChange={handleChange}
-        onInvalid={handleInvalid}
-      >
-        <div className="form-group">
-          <label>帳號</label>
-          <input
-            type="text"
-            name="username"
-            value={fields.username}
-            onChange={handleFieldChange}
-            required
-            placeholder="帳號"
-          />
-          {fieldErrors.username && (
-            <small className="text-danger form-text">
-              {fieldErrors.username}
-            </small>
-          )}
-        </div>
-        <div className="form-group">
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={fields.email}
-            onChange={handleFieldChange}
-            required
-            placeholder="email信箱"
-          />
-          {fieldErrors.email && (
-            <small className="text-danger form-text">{fieldErrors.email}</small>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label>密碼</label>
-          <input
-            type="password"
-            name="password"
-            value={fields.password}
-            onChange={handleFieldChange}
-            placeholder="密碼"
-            required
-            minLength="6"
-          />
-          {fieldErrors.password && (
-            <small className="text-danger form-text">
-              {fieldErrors.password}
-            </small>
-          )}
-        </div>
-        <div className="form-check">
-          <input
-            type="radio"
-            name="gender"
-            //用value就可以把直傳進去
-            value="男性"
-            required
-            // radio={fields.gender === '男性'}
-            onChange={handleFieldChange}
-            className="form-check-input"
-          />
-          <label className="form-check-label" htmlFor="exampleCheck1">
-            男性
-          </label>
-        </div>
-        <div className="form-check">
-          <input
-            type="radio"
-            name="gender"
-            //用value就可以把直傳進去
-            value="女性"
-            // radio={fields.gender === '女性'}
-            onChange={handleFieldChange}
-            className="form-check-input"
-          />
-          <label className="form-check-label" htmlFor="exampleCheck1">
-            女性
-          </label>
-        </div>
-        <div className="form-check">
-          <input
-            type="checkbox"
-            name="agree"
-            checked={fields.agree}
-            onChange={handleFieldChange}
-            className="form-check-input"
-          />
-          <label className="form-check-label" htmlFor="exampleCheck1">
-            我同意網站的使用者規章
-          </label>
-        </div>
-
-        {fieldErrors.agree && (
-          <small className="text-danger form-text">{fieldErrors.agree}</small>
-        )}
-
-        <button type="submit">提交</button>
-      </form>
+      {data.map((product, index) => {
+        return (
+          <div key={index}>
+            <h3>{product.name}</h3>
+          </div>
+        )
+      })}
     </>
   )
+
+  return <div className="container">{isLoading ? spinner : display}</div>
 }
 
 export default App
