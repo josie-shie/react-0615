@@ -1,5 +1,3 @@
-
-//與index.html搭配
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
@@ -7,7 +5,6 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 
 ReactDOM.render(
-  //做真實的檢查
   <React.StrictMode>
     <App />
   </React.StrictMode>,

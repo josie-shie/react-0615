@@ -5,12 +5,15 @@ import ProductList from './components/ProductList'
 import SearchBar from './components/SearchBar'
 import SortBar from './components/SortBar'
 
+//仿造從後端得來已經轉化成物件型態的資料
 import { data } from './data/'
 
 function App() {
+  //因為有重設的按鈕 因此需要一個陣列記住原本的狀態
   const [products, setProducts] = useState([])
+  //過濾後顯示的資料陣列
   const [displayProducts, setDisplayProducts] = useState([])
-
+  //四個標籤的狀態
   const [tags, setTags] = useState([])
   const [searchWord, setSearchWord] = useState('')
   const [sortBy, setSortBy] = useState('')
@@ -19,7 +22,6 @@ function App() {
     setProducts(data)
     setDisplayProducts(data)
   }, [])
-
 
   return (
     <>
