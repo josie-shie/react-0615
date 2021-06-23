@@ -17,6 +17,7 @@ function App() {
   const [auth, setAuth] = useState(false)
 
   return (
+    //// 起手式元件，會包裹在 SPA 元件的外層，它使用 HTML5 History API 讓 UI 與 URL 能夠同步
     <Router>
       <>
         {/* LOGO+標題+導覽列+上方選單 */}
