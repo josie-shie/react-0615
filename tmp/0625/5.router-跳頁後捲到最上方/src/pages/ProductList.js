@@ -4,7 +4,7 @@ import { withRouter, Link } from 'react-router-dom'
 // 模擬從伺服器端來的產品資料
 import { data } from '../data/'
 
-//import MultiLevelBreadcrumb from '../components/MultiLevelBreadcrumb'
+import MultiLevelBreadcrumb from '../components/MultiLevelBreadcrumb'
 
 function ProductList(props) {
   console.log(props)
@@ -12,7 +12,7 @@ function ProductList(props) {
   return (
     <>
       <h1>商品列表 - {props.title}</h1>
-      {/* <MultiLevelBreadcrumb /> */}
+      <MultiLevelBreadcrumb />
       <h3>使用params: id</h3>
       <ul>
         {data.map((product, i) => {
@@ -156,14 +156,7 @@ function ProductList(props) {
           props.history.push('/login')
         }}
       >
-        跳到登入
-      </button>
-      <button
-        onClick={() => {
-          props.history.push('/product-list')
-        }}
-      >
-        跳到最上面
+        跳到登入頁
       </button>
     </>
   )

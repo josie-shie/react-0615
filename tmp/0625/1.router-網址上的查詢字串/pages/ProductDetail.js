@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 // 模擬從伺服器端來的產品資料
 import { data } from '../data/'
-import Breadcrumb from '../components/Breadcrumb'
 
 function ProductDetail(props) {
   console.log(props)
   const [productItem, setProductItem] = useState({
     id: '',
-    picture: 'https://via.placeholder.com/150',
+    picture: '',
     stock: 0,
     name: '',
     price: 0,
@@ -22,13 +21,12 @@ function ProductDetail(props) {
     })
 
     console.log(product)
-    if (product) setProductItem(product)
+    setProductItem(product)
   }, [])
 
   return (
     <>
       <h1>ProductDetail</h1>
-      <Breadcrumb />
       <p>目前產品的id：{props.match.params.id}</p>
       <div>
         <div className="card" style={{ width: '18rem' }}>

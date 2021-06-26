@@ -2,23 +2,32 @@ import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 // 模擬從伺服器端來的產品資料
 import { data } from '../data/'
-import Breadcrumb from '../components/Breadcrumb'
 
-function ProductDetail(props) {
+function ProductDetailSearchParams(props) {
   console.log(props)
+
+  //引用withRouter的參數
+  //URLSearchParams返回一個Router的對象
+  const searchParams = new URLSearchParams(props.location.search)
+  
+  //用網址上的?id=1來搜尋
+  //網址上參數為一個字串
+  const searchParamsId = searchParams.get('id')
+
   const [productItem, setProductItem] = useState({
     id: '',
     picture: 'https://via.placeholder.com/150',
     stock: 0,
-    name: '',
-    price: 0,
+    name: '預設商品',
+    price: 2000,
     tags: '',
   })
 
   useEffect(() => {
     //console.log(123);
+
     const product = data.find((v, i) => {
-      return props.match.params.id === v.id
+      return searchParamsId === v.id
     })
 
     console.log(product)
@@ -27,9 +36,8 @@ function ProductDetail(props) {
 
   return (
     <>
-      <h1>ProductDetail</h1>
-      <Breadcrumb />
-      <p>目前產品的id：{props.match.params.id}</p>
+      <h1>ProductDetailSearchParams</h1>
+      <p>目前產品的id：{searchParamsId}</p>
       <div>
         <div className="card" style={{ width: '18rem' }}>
           <img src={productItem.picture} className="card-img-top" alt="..." />
@@ -50,4 +58,4 @@ function ProductDetail(props) {
   )
 }
 
-export default withRouter(ProductDetail)
+export default withRouter(ProductDetailSearchParams)

@@ -6,8 +6,6 @@ import ProductList from './pages/ProductList'
 import Login from './pages/Login'
 import ProductDetail from './pages/ProductDetail'
 import PrductDetailSearchParams from './pages/ProductDetailSearchParams'
-import NotFound from './pages/NotFound'
-import ScrollToTop from './components/ScrollToTop'
 
 // App的角色或工作
 // 1. 路由器/路由
@@ -46,41 +44,35 @@ function App() {
           </ul>
           {/* 路由表 */}
           {/* Switch讓第一個符合 URL 的元件會被渲染，反之，如果沒有 Switch 則所有符合 URL 的元件都會被渲染 */}
-          <ScrollToTop>
-            <Switch>
-              <Route path="/about">
-                <About auth={auth} />
-              </Route>
-              {/* 網站首頁  exact精確比對 在只有/的時候讓瀏覽器知道是指這個路由*/}
-              {/* 定義網址參數 params */}
-              {/* 較長的路徑放上面 小技巧*/}
-              <Route path="/prduct-detail-search-params/">
-                <PrductDetailSearchParams />
-              </Route>
-              <Route path="/product/oderList/">
-                <ProductList />
-              </Route>
-              <Route path="/product/cart/">
-                <ProductList />
-              </Route>
-              <Route path="/product-detail/:id?">
-                <ProductDetail auth={auth} />
-              </Route>
-              <Route path="/product-list">
-                <ProductList auth={auth} />
-              </Route>
-              <Route exact path="/login">
-                <Login auth={auth} setAuth={setAuth} />
-              </Route>
-              <Route exact path="/">
-                <Home />
-              </Route>
-              {/* 找不到頁面 */}
-              <Route exact path="*">
-                <NotFound />
-              </Route>
-            </Switch>
-          </ScrollToTop>
+          <Switch>
+            <Route path="/about">
+              <About auth={auth} />
+            </Route>
+            {/* 網站首頁  exact精確比對 在只有/的時候讓瀏覽器知道是指這個路由*/}
+            {/* 定義網址參數 params */}
+            {/* 較長的路徑放上面 小技巧*/}
+            <Route path="/prduct-detail-search-params/">
+              <PrductDetailSearchParams />
+            </Route>
+            <Route path="/product/oderList/">
+              <ProductList />
+            </Route>
+            <Route path="/product/cart/">
+              <ProductList />
+            </Route>
+            <Route path="/product-detail/:id?">
+              <ProductDetail auth={auth} />
+            </Route>
+            <Route path="/product-list">
+              <ProductList auth={auth} />
+            </Route>
+            <Route exact path="/login">
+              <Login auth={auth} setAuth={setAuth} />
+            </Route>
+            <Route exact path="/">
+              <Home />
+            </Route>
+          </Switch>
         </>
       </Router>
     </>
